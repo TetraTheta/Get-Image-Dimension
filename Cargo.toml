@@ -1,0 +1,14 @@
+[package]
+name = "get-image-dimension"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.5.23", features = ["derive"] }
+image = "0.25.5"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "z"
+strip = true
