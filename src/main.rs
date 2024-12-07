@@ -1,11 +1,19 @@
-use clap::Parser;
+use clap::{ArgGroup, Parser};
 use image::GenericImageView;
 use std::{path::PathBuf, process};
 
 #[derive(Parser)]
 #[command(version, about = "Prints the dimensions of an image in 'width x height' format.", long_about = None)]
+#[command(group(ArgGroup::new("dimension").args(&["width", "height"]).multiple(false)))]
 struct Args {
+  /// Target image
   file: Option<PathBuf>,
+  /// Output only the width of the image
+  #[arg(short, long)]
+  width: bool,
+  /// Output only the height of the image
+  #[arg(short, long)]
+  height: bool,
 }
 
 fn main() {
@@ -28,5 +36,12 @@ fn main() {
   };
 
   let dimension = img.dimensions();
-  println!("{} x {}", dimension.0, dimension.1);
+
+  if args.width {
+    println!("{}", dimension.0);
+  } else if args.height {
+    println!("{}", dimension.1);
+  } else {
+    println!("{} x {}", dimension.0, dimension.1);
+  }
 }
